@@ -7,7 +7,7 @@ public class PiCalculator{
     
     
     public static double r = 0x3b9ac9ff;
-    public static double N = 1;//refresh time
+    public static double N = 5000000;//refresh time
     private double piCalc;
     private long contCirc;
     private long contTotal;
@@ -19,26 +19,29 @@ public class PiCalculator{
     private static PiCalculator instance = null;
     
     
-    public static PiCalculator getInstance (String str){
+    public static PiCalculator getInstance (){
         if (instance == null)
-            instance = new PiCalculator(str);
+            instance = new PiCalculator();
         return instance;
     }
 
-    private PiCalculator(String str) {
+    private PiCalculator() {
         p = new Point();
-        seed = calcSeed(str);
         leibnizNum = 1;
         nilakanthaNum = 2;
     }
+
+    public static void setSeed(long seed) {
+        PiCalculator.seed = seed;
+    }
     
     
-    public static long calcSeed (String str){
+    public static void calcSeed (String str){
         long string=0;
         for (char c : str.toCharArray()){
             string += (long)c;
         }
-        return string*Calendar.getInstance().getTimeInMillis();
+        setSeed( string*Calendar.getInstance().getTimeInMillis() );
     }
     
     
@@ -56,7 +59,7 @@ public class PiCalculator{
         }
     }
     
-    public void calcPiLeibniz  (Random rnd){
+    public void calcPiLeibniz(){
         while(true){
             for (int i=0; i<N; i++){
                 piCalc += 4/(double)leibnizNum - 4/(double)(leibnizNum+2);
@@ -67,7 +70,7 @@ public class PiCalculator{
         }
     }
     
-    public void calcPiNilakantha (Random rnd){
+    public void calcPiNilakantha(){
         piCalc = 3;
         while(true){
             for (int i=0; i<N; i++){
